@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import CreateNewProduct from '@/components/CreateNewProduct';
 import Modal from '@/components/Modal';
+import AddBatch from '@/components/AddBatch';
 
 export default function Inventory() {
   const [data, setData] = useState([]);
@@ -11,6 +12,7 @@ export default function Inventory() {
   const [error, setError] = useState(null);
   const [dropdown, setDropdown] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState('')
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -71,12 +73,16 @@ export default function Inventory() {
 
           {dropdown && (
   <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-10 border border-gray-200">
-    <button
+    <button onClick={() => {setIsModalOpen(true); setDropdown(false); setModalType('New Batch')}}
       className="w-full bg-slate-200 text-gray-700 py-2 rounded-md hover:bg-slate-300 transition duration-300 mb-2 border border-gray-300"
     >
       New Batch
     </button>
-    <button
+    <button   onClick={() => {
+        setIsModalOpen(true);
+        setDropdown(false);
+        setModalType('Edit Stock')
+      }}
       className="w-full bg-blue-100 text-gray-700 py-2 rounded-md hover:bg-blue-200 transition duration-300 mb-2 border border-gray-300"
     >
       Edit Stock
@@ -85,6 +91,7 @@ export default function Inventory() {
       onClick={() => {
         setIsModalOpen(true);
         setDropdown(false);
+        setModalType('New Product')
       }}
       className="w-full bg-purple-100 text-gray-700 py-2 rounded-md hover:bg-purple-200 transition duration-300 border border-gray-300"
     >
@@ -106,7 +113,6 @@ export default function Inventory() {
         </div>
       )}
 
-      {/* Inventory Table */}
       {!isLoading && !error && (
         <div className="bg-white p-4 rounded-lg shadow-md mt-5">
           <DataGrid
@@ -124,12 +130,13 @@ export default function Inventory() {
         </div>
       )}
 
-      {/* Modal for Adding New Product */}
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <CreateNewProduct />
-        </Modal>
-      )}
+         {modalType === 'New Product' && <CreateNewProduct />}
+         {modalType === 'New Batch' && <AddBatch />}
+         {modalType === 'Edit Stock' && <CreateNewProduct />}
+        </Modal>)
+      }
     </div>
   );
 }
