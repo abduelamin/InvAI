@@ -5,6 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import CreateNewProduct from '@/components/CreateNewProduct';
 import Modal from '@/components/Modal';
 import AddBatch from '@/components/AddBatch';
+import EditStock from '@/components/EditStock';
 
 export default function Inventory() {
   const [data, setData] = useState([]);
@@ -134,7 +135,7 @@ export default function Inventory() {
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
          {modalType === 'New Product' && <CreateNewProduct />}
          {modalType === 'New Batch' && <AddBatch />}
-         {modalType === 'Edit Stock' && <CreateNewProduct />}
+         {modalType === 'Edit Stock' && <EditStock />}
         </Modal>)
       }
     </div>
