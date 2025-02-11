@@ -6,6 +6,7 @@ import CreateNewProduct from '@/components/CreateNewProduct';
 import Modal from '@/components/Modal';
 import AddBatch from '@/components/AddBatch';
 import EditStock from '@/components/EditStock';
+import InventoryAlerts from '@/components/InventroyAlerts';
 
 export default function Inventory() {
   const [data, setData] = useState([]);
@@ -13,7 +14,9 @@ export default function Inventory() {
   const [error, setError] = useState(null);
   const [dropdown, setDropdown] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState('')
+  const [modalType, setModalType] = useState('');
+  const [alerts, setAlerts] = useState([]);
+  const [batchData, setBatchData] = useState([]);
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -21,7 +24,6 @@ export default function Inventory() {
         const response = await fetch('http://localhost:8080/api/stockoverview');
         if (!response.ok) throw new Error('Failed to fetch inventory');
         const { rows } = await response.json();
-
         const processedData = rows.map(row => ({
           ...row,
           expiry_date: new Date(row.expiry_date),
@@ -43,6 +45,7 @@ export default function Inventory() {
     fetchInventory();
   }, []);
 
+
   const columns = [
     { field: 'product_name', headerName: 'Product Name', width: 200 },
     { field: 'strength', headerName: 'Strength', width: 150, disableColumnFilter: true, sortable: false },
@@ -62,42 +65,36 @@ export default function Inventory() {
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md">
         <h1 className="text-2xl font-semibold text-gray-700">Inventory</h1>
+        <button onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('Alerts') }}
+                className="w-200px px-6 bg-blue-100 text-gray-700 py-2 rounded-md hover:bg-blue-200 transition duration-300 mb-2 border border-gray-300"
+              >
+                Inventory Status
+              </button>
         <div className="relative">
           <button
-            onClick={() => setDropdown((prev) => !prev)
-              
-            }
+            onClick={() => setDropdown((prev) => !prev)}
             className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
           >
             Edit Inventory
           </button>
 
           {dropdown && (
-  <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-10 border border-gray-200">
-    <button onClick={() => {setIsModalOpen(true); setDropdown(false); setModalType('New Batch')}}
-      className="w-full bg-slate-200 text-gray-700 py-2 rounded-md hover:bg-slate-300 transition duration-300 mb-2 border border-gray-300"
-    >
-      New Batch
-    </button>
-    <button   onClick={() => {
-        setIsModalOpen(true);
-        setDropdown(false);
-        setModalType('Edit Stock')
-      }}
-      className="w-full bg-blue-100 text-gray-700 py-2 rounded-md hover:bg-blue-200 transition duration-300 mb-2 border border-gray-300"
-    >
-      Edit Stock
-    </button>
-    <button
-      onClick={() => {
-        setIsModalOpen(true);
-        setDropdown(false);
-        setModalType('New Product')
-      }}
-      className="w-full bg-purple-100 text-gray-700 py-2 rounded-md hover:bg-purple-200 transition duration-300 border border-gray-300"
-    >
-      Create New Product
-    </button>
+            <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-10 border border-gray-200">
+              <button onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('New Batch') }}
+                className="w-full bg-slate-200 text-gray-700 py-2 rounded-md hover:bg-slate-300 transition duration-300 mb-2 border border-gray-300"
+              >
+                New Batch
+              </button>
+              <button onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('Edit Stock') }}
+                className="w-full bg-blue-100 text-gray-700 py-2 rounded-md hover:bg-blue-200 transition duration-300 mb-2 border border-gray-300"
+              >
+                Edit Stock
+              </button>
+              <button onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('New Product') }}
+                className="w-full bg-purple-100 text-gray-700 py-2 rounded-md hover:bg-purple-200 transition duration-300 border border-gray-300"
+              >
+                Create New Product
+              </button>
             </div>
           )}
         </div>
@@ -127,17 +124,19 @@ export default function Inventory() {
                 sortModel: [{ field: 'product_name', sort: 'asc' }],
               },
             }}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
           />
         </div>
       )}
 
-      {isModalOpen && (
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-         {modalType === 'New Product' && <CreateNewProduct />}
-         {modalType === 'New Batch' && <AddBatch />}
-         {modalType === 'Edit Stock' && <EditStock />}
-        </Modal>)
-      }
+<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+  {modalType === 'New Batch' && <AddBatch />}
+  {modalType === 'Edit Stock' && <EditStock />}
+  {modalType === 'New Product' && <CreateNewProduct />}
+  {modalType === 'Alerts' && <InventoryAlerts />}
+</Modal>
+
     </div>
   );
 }

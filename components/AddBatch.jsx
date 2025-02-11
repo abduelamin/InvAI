@@ -32,12 +32,9 @@ const result = await response.json()
 
 if (!response.ok) throw new Error ( result.message || 'Client Error: batch failed to add')
 
-      // ✅ Success toast
       toast.success("Batch added successfully!");
 
     } catch (error) {
-    //  console.log(error)
-      // ❌ Error toast
       toast.error(error.message || "Something went wrong!");
     }}
 

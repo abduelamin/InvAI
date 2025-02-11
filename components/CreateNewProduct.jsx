@@ -29,7 +29,6 @@ const response = await fetch('http://localhost:8080/api/addproduct', {
 if (!response.ok) throw new Error ('Failed to add product')
 
     const result = await response.json()
-console.log('FE added the product:', result)
 
     } catch (error) {
      console.log('Error in the UI form plz check:', error)
