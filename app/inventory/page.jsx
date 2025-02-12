@@ -2,6 +2,7 @@
 import Header from '@/components/Header';
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import { ChevronDown, Loader2, AlertCircle } from 'lucide-react';
 import CreateNewProduct from '@/components/CreateNewProduct';
 import Modal from '@/components/Modal';
 import AddBatch from '@/components/AddBatch';
@@ -15,8 +16,6 @@ export default function Inventory() {
   const [dropdown, setDropdown] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState('');
-  const [alerts, setAlerts] = useState([]);
-  const [batchData, setBatchData] = useState([]);
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -62,67 +61,68 @@ export default function Inventory() {
   ];
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md">
-        <h1 className="text-2xl font-semibold text-gray-700">Inventory</h1>
-        <button onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('Alerts') }}
-                className="w-200px px-6 bg-blue-100 text-gray-700 py-2 rounded-md hover:bg-blue-200 transition duration-300 mb-2 border border-gray-300"
-              >
-                Inventory Status
-              </button>
-        <div className="relative">
+    <div className="p-10 bg-gray-100 min-h-screen">
+      {/* Header Section */}
+      <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-md border border-gray-300">
+        <h1 className="text-4xl font-semibold text-gray-900 tracking-tight">Inventory Management</h1>
+        <div className="flex items-center gap-5">
+          {/* Inventory Status Button */}
           <button
-            onClick={() => setDropdown((prev) => !prev)}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+            onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('Alerts'); }}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition"
           >
-            Edit Inventory
+            <AlertCircle size={18} /> Inventory Status
           </button>
-
-          {dropdown && (
-            <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 w-64 z-10 border border-gray-200">
-              <button onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('New Batch') }}
-                className="w-full bg-slate-200 text-gray-700 py-2 rounded-md hover:bg-slate-300 transition duration-300 mb-2 border border-gray-300"
-              >
-                New Batch
-              </button>
-              <button onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('Edit Stock') }}
-                className="w-full bg-blue-100 text-gray-700 py-2 rounded-md hover:bg-blue-200 transition duration-300 mb-2 border border-gray-300"
-              >
-                Edit Stock
-              </button>
-              <button onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType('New Product') }}
-                className="w-full bg-purple-100 text-gray-700 py-2 rounded-md hover:bg-purple-200 transition duration-300 border border-gray-300"
-              >
-                Create New Product
-              </button>
-            </div>
-          )}
+          {/* Edit Inventory Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setDropdown((prev) => !prev)}
+              className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white text-sm font-medium rounded-lg shadow-md hover:bg-gray-800 transition"
+            >
+              Edit Inventory <ChevronDown size={18} />
+            </button>
+            {dropdown && (
+              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg py-2 w-64 z-20 border border-gray-200">
+                {['New Batch', 'Edit Stock', 'New Product'].map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => { setIsModalOpen(true); setDropdown(false); setModalType(type); }}
+                    className="block w-full px-5 py-3 text-left text-gray-700 hover:bg-gray-100 transition"
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {isLoading && (
-        <div className="flex justify-center items-center h-40">
-          <p className="text-gray-600 text-lg">Loading inventory...</p>
-        </div>
-      )}
-      {error && (
-        <div className="flex justify-center items-center h-40">
-          <p className="text-red-500 text-lg">Error: {error}</p>
-        </div>
-      )}
+      {/* Loading & Error Handling */}
+      <div className="mt-6">
+        {isLoading && (
+          <div className="flex justify-center items-center h-40">
+            <Loader2 className="animate-spin text-gray-600" size={28} />
+          </div>
+        )}
+        {error && (
+          <div className="flex justify-center items-center h-40">
+            <p className="text-red-500 text-lg">Error: {error}</p>
+          </div>
+        )}
+      </div>
 
+      {/* DataGrid */}
       {!isLoading && !error && (
-        <div className="bg-white p-4 rounded-lg shadow-md mt-5">
+        <div className="bg-white p-6 rounded-lg shadow-md mt-6 border border-gray-200">
           <DataGrid
             rows={data}
             columns={columns}
             getRowId={(row) => row.batch_id}
-            className="!text-gray-700"
+            className="text-gray-800"
             autoHeight
             initialState={{
-              sorting: {
-                sortModel: [{ field: 'product_name', sort: 'asc' }],
-              },
+              sorting: { sortModel: [{ field: 'product_name', sort: 'asc' }] },
             }}
             pageSize={5}
             rowsPerPageOptions={[5]}
@@ -130,13 +130,14 @@ export default function Inventory() {
         </div>
       )}
 
-<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-  {modalType === 'New Batch' && <AddBatch />}
-  {modalType === 'Edit Stock' && <EditStock />}
-  {modalType === 'New Product' && <CreateNewProduct />}
-  {modalType === 'Alerts' && <InventoryAlerts />}
-</Modal>
-
+      {/* Modals */}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        {modalType === 'New Batch' && <AddBatch />}
+        {modalType === 'Edit Stock' && <EditStock />}
+        {modalType === 'New Product' && <CreateNewProduct />}
+        {modalType === 'Alerts' && <InventoryAlerts />}
+      </Modal>
     </div>
   );
 }
+
