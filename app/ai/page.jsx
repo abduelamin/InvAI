@@ -14,18 +14,26 @@ const AIZone = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGenerateAI = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("http://localhost:8080/api/ai/forecast");
-      const data = await response.json();
-      setAiSummary(data.aiSummary);
-    } catch (error) {
-      console.error("Error generating AI insight:", error);
-      setAiSummary("An error occurred while generating insights.");
-    } finally {
+   setIsLoading(true);
+  setAiSummary("");
+
+  const eventSource = new EventSource("http://localhost:8080/api/ai/forecast");
+
+  eventSource.onmessage = (event) => {
+    if (event.data === "[DONE]") {
       setIsLoading(false);
+      eventSource.close();
+      return;
     }
+    setAiSummary((prev) => prev + event.data);
   };
+
+  eventSource.onerror = (err) => {
+    console.error("EventSource error:", err);
+    setIsLoading(false);
+    eventSource.close();
+  };
+};
 
 
   return (
@@ -53,7 +61,7 @@ const AIZone = () => {
         </CardHeader>
         <CardContent>
             <p className="text-gray-800 text-lg leading-relaxed">
-               {isLoading && 'Analysing data...' || aiSummary || 'No insights available. Please click the button to generate an AI report.'} 
+            {aiSummary ? aiSummary : isLoading ? 'Analysing data...' : 'No insights available. Please click the button to generate an AI report.'}
             </p>
         </CardContent>
       </Card>
