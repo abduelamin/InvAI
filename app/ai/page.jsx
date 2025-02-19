@@ -87,7 +87,7 @@ const AIZone = () => {
             formatResponse(aiSummary)
           ) : (
             <p className="text-gray-800 text-lg leading-relaxed">
-              {isLoading ? "Analysing data..." : "No insights available. Please click the button to generate an AI report."}
+              {isLoading ? "Analysing data..." : "Please click the button to generate an AI report."}
             </p>
           )}
         </CardContent>
