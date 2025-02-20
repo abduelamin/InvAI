@@ -1,14 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Zap } from "lucide-react";
 
-const AIZone = () => {
+const AIForecast = () => {
   const [aiSummary, setAiSummary] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -16,7 +11,9 @@ const AIZone = () => {
     setIsLoading(true);
     setAiSummary("");
 
-    const eventSource = new EventSource("http://localhost:8080/api/ai/forecast");
+    const eventSource = new EventSource(
+      "http://localhost:8080/api/ai/forecast"
+    );
 
     eventSource.onmessage = (event) => {
       if (event.data === "[DONE]") {
@@ -39,13 +36,20 @@ const AIZone = () => {
     if (!text) return "";
 
     return text
-      .replace(/PREDICTIVE OUTLOOK:/g, "\n\nPREDICTIVE OUTLOOK:\n") 
-      .replace(/ACTIONABLE RECOMMENDATIONS:/g, "\n\nACTIONABLE RECOMMENDATIONS:\n") 
-      .split(/\n\s*\n/) 
+      .replace(/PREDICTIVE OUTLOOK:/g, "\n\nPREDICTIVE OUTLOOK:\n")
+      .replace(
+        /ACTIONABLE RECOMMENDATIONS:/g,
+        "\n\nACTIONABLE RECOMMENDATIONS:\n"
+      )
+      .split(/\n\s*\n/)
       .map((section, index) => {
-    
         const match = section.match(/^([A-Z ]+):\s*(.*)$/s);
-        if (!match) return <p key={index} className="text-gray-800">{section}</p>;
+        if (!match)
+          return (
+            <p key={index} className="text-gray-800">
+              {section}
+            </p>
+          );
 
         const [_, heading, content] = match;
 
@@ -53,7 +57,11 @@ const AIZone = () => {
           <div key={index} className="mb-6">
             <h2 className="text-lg font-semibold text-blue-700">{heading}</h2>
             {content.split("- ").map((line, i) =>
-              line.trim() ? <p key={i} className="text-gray-800 leading-relaxed mb-2">{line.trim()}</p> : null
+              line.trim() ? (
+                <p key={i} className="text-gray-800 leading-relaxed mb-2">
+                  {line.trim()}
+                </p>
+              ) : null
             )}
           </div>
         );
@@ -87,7 +95,9 @@ const AIZone = () => {
             formatResponse(aiSummary)
           ) : (
             <p className="text-gray-800 text-lg leading-relaxed">
-              {isLoading ? "Analysing data..." : "Please click the button to generate an AI report."}
+              {isLoading
+                ? "Analysing data..."
+                : "Please click the button to generate an AI report."}
             </p>
           )}
         </CardContent>
@@ -96,4 +106,4 @@ const AIZone = () => {
   );
 };
 
-export default AIZone;
+export default AIForecast;

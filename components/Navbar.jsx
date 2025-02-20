@@ -17,10 +17,10 @@ export default function Navbar() {
             Home
           </Link>
           <Link
-            href="/dashboard"
+            href="/weeklyreport"
             className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
           >
-            Dashboard
+            AI Weekly reports
           </Link>
           <Link
             href="/inventory"
@@ -29,10 +29,10 @@ export default function Navbar() {
             Inventory
           </Link>
           <Link
-            href="/ai"
+            href="/aiforecast"
             className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
           >
-            AI
+            AI forecast
           </Link>
         </div>
       </div>
