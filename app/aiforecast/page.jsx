@@ -69,39 +69,47 @@ const AIForecast = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-blue-900 flex items-center gap-2">
-          <span className="p-2 bg-blue-100 rounded-lg">
-            <Zap className="w-8 h-8 text-blue-600" />
-          </span>
-          AI Inventory Insights
-        </h1>
-        <button
-          className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition"
-          onClick={handleGenerateAI}
-          disabled={isLoading}
-        >
-          {isLoading ? "Generating..." : "Generate AI Insight"}
-        </button>
-      </div>
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl shadow-lg p-8">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+          <h1 className="text-3xl font-bold text-amber-800 flex items-center gap-3">
+            <span className="p-3 bg-amber-100 rounded-xl shadow-sm">
+              <Zap className="w-8 h-8 text-amber-600" />
+            </span>
+            Predictive Inventory Analysis
+          </h1>
+          <button
+            className="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-50"
+            onClick={handleGenerateAI}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="animate-spin">🌀</span>
+                Generating...
+              </span>
+            ) : (
+              "Generate Insights"
+            )}
+          </button>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">AI Report</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <div className="bg-white rounded-xl shadow-inner p-6 border border-amber-100">
           {aiSummary ? (
-            formatResponse(aiSummary)
+            <div className="space-y-6 text-amber-900">
+              {formatResponse(aiSummary)}
+            </div>
           ) : (
-            <p className="text-gray-800 text-lg leading-relaxed">
-              {isLoading
-                ? "Analysing data..."
-                : "Please click the button to generate an AI report."}
-            </p>
+            <div className="text-center py-12">
+              <p className="text-amber-700 text-lg">
+                {isLoading
+                  ? "Analyzing inventory trends..."
+                  : "Click above to generate AI-powered predictions"}
+              </p>
+            </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
