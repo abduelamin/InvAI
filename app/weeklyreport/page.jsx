@@ -12,7 +12,7 @@ const WeeklyReport = () => {
     setError("");
     try {
       const response = await fetch(
-        "http://localhost:8080/api/ai/weekly-report"
+        "inv-ai-backend.vercel.app/api/ai/weekly-report"
       );
       if (!response.ok) {
         const errorData = await response.json();

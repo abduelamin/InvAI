@@ -20,7 +20,9 @@ export default function Inventory() {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/stockoverview");
+        const response = await fetch(
+          "inv-ai-backend.vercel.app/api/stockoverview"
+        );
         if (!response.ok) throw new Error("Failed to fetch inventory");
         const { rows } = await response.json();
         const processedData = rows.map((row) => ({
