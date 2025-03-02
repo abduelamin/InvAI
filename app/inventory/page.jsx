@@ -21,7 +21,7 @@ export default function Inventory() {
     const fetchInventory = async () => {
       try {
         const response = await fetch(
-          "inv-ai-backend.vercel.app/api/stockoverview"
+          "https://inv-ai-backend.vercel.app/api/stockoverview"
         );
         if (!response.ok) throw new Error("Failed to fetch inventory");
         const { rows } = await response.json();

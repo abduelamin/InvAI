@@ -12,7 +12,7 @@ const AIForecast = () => {
     setAiSummary("");
 
     const eventSource = new EventSource(
-      "inv-ai-backend.vercel.app/api/ai/forecast"
+      "https://inv-ai-backend.vercel.app/api/ai/forecast"
     );
 
     eventSource.onmessage = (event) => {

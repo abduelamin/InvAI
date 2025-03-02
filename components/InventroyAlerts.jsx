@@ -9,7 +9,7 @@ const InventoryAlerts = ({ isOpen, onClose, children }) => {
       let batchDetails = [];
       try {
         const response = await fetch(
-          "inv-ai-backend.vercel.app/api/batchdetails"
+          "https://inv-ai-backend.vercel.app/api/batchdetails"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch batch details");

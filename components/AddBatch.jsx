@@ -18,13 +18,16 @@ const AddBatch = () => {
     };
 
     try {
-      const response = await fetch("inv-ai-backend.vercel.app/api/addbatch", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
-      });
+      const response = await fetch(
+        "https://inv-ai-backend.vercel.app/api/addbatch",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(productData),
+        }
+      );
 
       const result = await response.json();
 

@@ -17,13 +17,16 @@ const CreateNewProduct = () => {
     };
 
     try {
-      const response = await fetch("inv-ai-backend.vercel.app/api/addproduct", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
-      });
+      const response = await fetch(
+        "https://inv-ai-backend.vercel.app/api/addproduct",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(productData),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to add product");
 
