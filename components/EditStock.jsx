@@ -3,6 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-hot-toast";
 
 const EditStock = () => {
   const { register, handleSubmit } = useForm();
@@ -29,9 +30,10 @@ const EditStock = () => {
       if (!response.ok) throw new Error("Failed to add product");
 
       const result = await response.json();
-      console.log("FE added the product:", result);
+      toast.success("Batch updated!");
     } catch (error) {
-      console.log("Error in the UI form plz check:", error);
+      console.log("Error", error);
+      toast.error(error.message);
     }
   };
 

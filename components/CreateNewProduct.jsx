@@ -3,7 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { toast } from "react-hot-toast";
 const CreateNewProduct = () => {
   const { register, handleSubmit } = useForm();
 
@@ -28,11 +28,14 @@ const CreateNewProduct = () => {
         }
       );
 
-      if (!response.ok) throw new Error("Failed to add product");
+      if (!response.ok)
+        throw new Error(
+          result.message || "Client Error: Product failed to add"
+        );
 
-      const result = await response.json();
+      toast.success("Product added successfully!");
     } catch (error) {
-      console.log("Error in the UI form plz check:", error);
+      toast.error(error.message || "Something went wrong!");
     }
   };
 
