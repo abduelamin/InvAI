@@ -117,7 +117,15 @@ export default function Inventory() {
           </div>
         </div>
 
-        {/* DataGrid Section */}
+        {isLoading && (
+          <div className="flex flex-col items-center justify-center mb-8 space-y-4">
+            <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-lg font-medium text-amber-700 animate-pulse">
+              Preparing inventory...
+            </span>
+          </div>
+        )}
+
         {!isLoading && !error && (
           <div className="bg-white p-6 rounded-2xl shadow-lg border border-amber-100">
             <DataGrid
@@ -149,7 +157,6 @@ export default function Inventory() {
         )}
       </div>
 
-      {/* Modals */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         {modalType === "New Batch" && <AddBatch />}
         {modalType === "Edit Stock" && <EditStock />}
