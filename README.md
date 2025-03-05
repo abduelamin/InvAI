@@ -12,8 +12,7 @@
 ---
 
 ## 📹 Live Demo  
-*[Insert Loom/Vimeo Demo Link Here]*  
-*(Recommended: 2-minute demo showing AI report generation and predictive dashboard)*
+[Inv-AI](https://inv-ai.vercel.app/)
 
 ---
 
