@@ -17,9 +17,6 @@ export default function Home() {
 
   return (
     <main className="bg-[#121210] text-[#FAF9F6] min-h-screen selection:bg-[#d4ff00] selection:text-black font-sans antialiased overflow-x-hidden">
-      {/* Subtle Warm Gradient Overlay */}
-
-      {/* --- Hero: Warm Editorial --- */}
       <section className="relative pt-64 pb-32 px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -45,7 +42,7 @@ export default function Home() {
             >
               <p className="text-xl md:text-2xl font-light leading-relaxed max-w-md text-stone-300">
                 The gentle standard for AI pharmaceutical management. Designed
-                for clinicians, optimised for patient care.
+                for clinicians, optimised for business and Patient care.
               </p>
             </motion.div>
 
@@ -131,7 +128,7 @@ export default function Home() {
                 $12.4k
               </h4>
               <p className="font-medium opacity-70">
-                Monthly waste reduction identified via AI Protocol.
+                Monthly waste reduction identified via AI Protocol!
               </p>
             </div>
           </div>
