@@ -42,7 +42,7 @@ export default function Home() {
             >
               <p className="text-xl md:text-2xl font-light leading-relaxed max-w-md text-stone-300">
                 The gentle standard for AI pharmaceutical management. Designed
-                for clinicians, optimised for business and Patient care.
+                for clinicians, optimised for Patient care.
               </p>
             </motion.div>
 
